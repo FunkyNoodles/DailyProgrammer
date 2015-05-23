@@ -1,6 +1,7 @@
 /*From r/DailyProgrammer
  *Link: http://www.reddit.com/r/dailyprogrammer/comments/36cyxf/20150518_challenge_215_easy_sad_cycles/
- *Written in Java, compiler:1.8u25
+ *Written in Java, compiler:1.8u45
+ *Name: Sad Cycles
  */
 
 package dailyProgrammer;
@@ -14,6 +15,7 @@ public class May18_2015 {
 	
 	public static void main(String[] args){
 		
+		@SuppressWarnings("resource")
 		Scanner a = new Scanner(System.in);
 		
 		boolean first = true;
