@@ -7,16 +7,10 @@ package dailyProgrammer;
 
 public class Aug24_2015 {
 	public static void main(String[] args){
-		dottie(4);
+
 	}
 
-	public static void dottie(double n){
-		double x = Math.cos(n);
-		double y = Math.cos(x);
-		while(x != y){
-			x =y;
-			y=Math.cos(y);
-		}
-		System.out.println(y);
+	public void dottie(double n){
+
 	}
 }
