@@ -1,3 +1,6 @@
+from collections import Counter
+
+
 class Card:
     def __init__(self, value, suit):
         self.value = value
@@ -14,9 +17,9 @@ class Hand:
     def __init__(self, cards):
         self.cards = cards
         self.sort_cards()
-        card_value = ''
+        self.card_value = ''
         for c in self.cards:
-            card_value += c.value
+            self.card_value += c.value
 
     def sort_cards(self):
         self.cards.sort()
@@ -37,12 +40,15 @@ class Hand:
     def is_straight(self):
         return (self.card_value in '234567890JQKA') or (self.card_value in '2345A')
 
+    def is_four_of_a_kind(self):
+        return max(Counter(self.card_value).values()) == 4
+
     def __lt__(self, other):
 
         return False
 
 
-hand = Hand([Card('A', 'D'), Card('3', 'C'), Card('2', 'D'), Card('5', 'D'), Card('4', 'D')])
+hand = Hand([Card('A', 'D'), Card('A', 'C'), Card('A', 'D'), Card('A', 'D'), Card('4', 'D')])
 hand.print_hand()
-print hand.is_straight()
+print hand.is_four_of_a_kind()
 
