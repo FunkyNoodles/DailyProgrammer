@@ -2,10 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d18fe187-4694-4589-bb2a-8b2d9b38ca4b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/PythonSolutions/2017-06-12/input1.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/DailyProgrammer.iml" afterPath="$PROJECT_DIR$/.idea/DailyProgrammer.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PythonSolutions/2017-06-12/main.py" afterPath="$PROJECT_DIR$/PythonSolutions/2017-06-12/main.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -24,11 +20,10 @@
       <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/PythonSolutions/2017-06-12/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="481">
-              <caret line="218" column="25" lean-forward="false" selection-start-line="217" selection-start-column="25" selection-end-line="218" selection-end-column="25" />
+            <state relative-caret-position="-1477">
+              <caret line="27" column="0" lean-forward="true" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
               <folding>
                 <element signature="e#0#31#0" expanded="true" />
-                <element signature="e#127#548#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -340,7 +335,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="5" />
+      <option name="time" value="10" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -351,7 +346,6 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
-            <element signature="e#127#548#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -362,7 +356,6 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
-            <element signature="e#127#548#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -373,7 +366,6 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
-            <element signature="e#127#548#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -405,7 +397,6 @@
           <caret line="54" column="0" lean-forward="true" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
-            <element signature="e#127#548#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -439,13 +430,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="371">
+          <caret line="1595" column="0" lean-forward="false" selection-start-line="1595" selection-start-column="0" selection-end-line="1595" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/PythonSolutions/2017-06-12/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="481">
-          <caret line="218" column="25" lean-forward="false" selection-start-line="217" selection-start-column="25" selection-end-line="218" selection-end-column="25" />
+        <state relative-caret-position="-1477">
+          <caret line="27" column="0" lean-forward="true" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
-            <element signature="e#127#548#0" expanded="false" />
           </folding>
         </state>
       </provider>

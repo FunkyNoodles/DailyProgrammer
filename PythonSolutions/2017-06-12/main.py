@@ -27,108 +27,81 @@ class Card:
         return self.value + self.suit
 
 
-class Hand:
+class Hand(object):
     def __init__(self, cards):
-        self.cards = cards
-        self.card_value = ''
-        for c in self.cards:
-            self.card_value += c.value
+        assert len(cards) == 5
 
-        self.tier = self.get_tier()
+        self.cards = cards
+        self.name = None
+        self.tier = None
+        self.get_type()
         self.sort_cards()
 
-    def print_hand(self):
-        for c in self.cards:
-            print c.value + c.suit,
+    def get_suits(self):
+        return [card.suit for card in self.cards]
 
-        print
+    def get_values(self):
+        return [card.value for card in self.cards]
 
-    def is_flush(self):
-        for i in range(len(self.cards) - 1):
-            if self.cards[i].suit != self.cards[i+1].suit:
-                return False
-
-        return True
-
-    def is_straight(self):
-        return (self.card_value in values) or (self.card_value in '2345A')
-
-    def is_four_of_a_kind(self):
-        return max(Counter(self.card_value).values()) == 4
-
-    def is_three_of_a_kind(self):
-        cards = (Counter(self.card_value).values())
-        cards.sort(reverse=True)
-        return cards == [3, 1, 1]
-
-    def is_full_house(self):
-        cards = (Counter(self.card_value).values())
-        cards.sort(reverse=True)
-        return cards == [3, 2]
-
-    def is_two_pairs(self):
-        cards = (Counter(self.card_value).values())
-        cards.sort(reverse=True)
-        return cards == [2, 2, 1]
-
-    def is_pair(self):
-        cards = (Counter(self.card_value).values())
-        cards.sort(reverse=True)
-        return cards == [2, 1, 1, 1]
-
-    def get_tier(self):
-        if self.is_straight() and self.is_flush():
-            return 9
-        elif self.is_four_of_a_kind():
-            return 8
-        elif self.is_full_house():
-            return 7
-        elif self.is_flush():
-            return 6
-        elif self.is_straight():
-            return 5
-        elif self.is_three_of_a_kind():
-            return 4
-        elif self.is_two_pairs():
-            return 3
-        elif self.is_pair():
-            return 2
+    def get_type(self):
+        if len(set(self.get_suits())) == 1 and self.have_consecs():
+            self.name = "Straight Flush"
+            self.tier = 9
+        elif max(Counter(self.get_values()).values()) == 4:
+            self.name = "Four of a Kind"
+            self.tier = 8
+        elif set(Counter(self.get_values()).values()) == {3, 2}:
+            self.name = "Full House"
+            self.tier = 7
+        elif len(set(self.get_suits())) == 1:
+            self.name = "Flush"
+            self.tier = 6
+        elif self.have_consecs():
+            self.name = "Straight"
+            self.tier = 5
+        elif set(Counter(self.get_values()).values()) == {3, 1}:
+            self.name = "Three of a Kind"
+            self.tier = 4
+        elif list(Counter(self.get_values()).values()).count(2) == 2:
+            self.name = "Two Pairs"
+            self.tier = 3
+        elif len(set(self.get_values())) == 4:
+            self.name = "Pair"
+            self.tier = 2
         else:
-            return 1
+            self.name = "Highest Card"
+            self.tier = 1
 
     def sort_cards(self):
-        if self.tier in [9, 5]:
+        if self.name in ["Straight Flush", "Straight"]:
             self.cards.sort(key=Card.rank, reverse=True)
-            if 'A' in self.card_value and '2' in self.card_value:
+            if 'A' in self.get_values() and '2' in self.get_values():
                 self.cards = self.cards[1:] + [self.cards[0]]
 
-        elif self.tier in [8, 7, 4, 2]:
-            x_of_this = Counter(self.card_value).most_common(1)[0][0]
+        elif self.name in ["Four of a Kind", "Full House", "Three of a Kind", "Pair"]:
+            x_of_this = Counter(self.get_values()).most_common(1)[0][0]
             tmp = [card for card in self.cards if card.value == x_of_this]
             self.cards = tmp + sorted([card for card in self.cards if card.value != x_of_this],
                                       key=Card.rank, reverse=True)
 
-        elif self.tier in [6, 1]:
+        elif self.name in ["Flush", "Highest Card"]:
             self.cards.sort(key=Card.rank, reverse=True)
 
-        elif self.tier == 3:
-            pairs = [v for v, _ in Counter(self.card_value).most_common(2)]
+        elif self.name == "Two Pairs":
+            pairs = [v for v, _ in Counter(self.get_values()).most_common(2)]
             tmp = sorted([card for card in self.cards if card.value in pairs], key=Card.rank, reverse=True)
             self.cards = tmp + [card for card in self.cards if card.value not in pairs]
 
-    def __lt__(self, other):
-        if self.tier < other.tier:
-            return True
-        elif self.tier == other.tier:
-            for i in range(5):
-                if self.card_value[i] < other.card_value[i]:
-                    return True
-                elif self.card_value[i] > other.card_value[i]:
-                    return False
+    def have_consecs(self):
+        value_list = "A234567890JQKA"
+        possibles = []
+        for i in range(1+len(value_list)-5):
+            possibles.append(value_list[i:i+5])
 
-        else:
-            return False
-        return False
+        sorted_values = sorted(self.get_values(), key=lambda x: "234567890JQKA".index(x))
+        if 'A' in self.get_values() and '2' in self.get_values():
+            sorted_values = [sorted_values[-1]] + sorted_values[:-1]
+        return ''.join(sorted_values) in possibles
 
     def __eq__(self, other):
         if self.tier == other.tier:
@@ -138,12 +111,16 @@ class Hand:
             return True
         return False
 
-    def __str__(self):
-        tmp_string = ''
-        for c in self.cards:
-            tmp_string = tmp_string + c.value + c.suit
-
-        return tmp_string
+    def __lt__(self, other):
+        if self.tier < other.tier:
+            return True
+        elif self.tier == other.tier:
+            for card_s, card_o in zip(self.cards, other.cards):
+                if card_s.rank() < card_o.rank():
+                    return True
+                elif card_s.rank() > card_o.rank():
+                    return False
+        return False
 
 
 def get_card_from_string(give_card_string):
@@ -218,9 +195,13 @@ for turn_card in deck:
             for hand_tuple in player_hands_combinations:
                 player_hands.append(Hand(list(hand_tuple)))
 
-            show_down_hands.append(max(player_hands))
+            best_hand = max(player_hands)
+            show_down_hands.append(best_hand)
 
         winning_player_index = np.argmax(show_down_hands)
+        # if any([show_down_hands[x] == show_down_hands[winning_player_index] for x, y in enumerate(show_down_hands) if x != winning_player_index]):
+        #     print 'tie'
+        # else:
         player_scores[winning_player_index] += 1
 
 print player_scores
