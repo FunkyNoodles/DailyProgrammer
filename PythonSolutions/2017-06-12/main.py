@@ -1,4 +1,9 @@
 from collections import Counter
+import numpy as np
+import itertools
+
+values = '234567890JQKA'
+suits = 'CHSD'
 
 
 class Card:
@@ -7,10 +12,19 @@ class Card:
         self.suit = suit
 
     def rank(self):
-        return '234567890JQKA'.index(self.value)
+        return values.index(self.value)
+
+    def __eq__(self, other):
+        if self.value == other.value and self.suit == other.suit:
+            return True
+
+        return False
 
     def __lt__(self, other):
         return self.rank() < other.rank()
+
+    def __str__(self):
+        return self.value + self.suit
 
 
 class Hand:
@@ -37,7 +51,7 @@ class Hand:
         return True
 
     def is_straight(self):
-        return (self.card_value in '234567890JQKA') or (self.card_value in '2345A')
+        return (self.card_value in values) or (self.card_value in '2345A')
 
     def is_four_of_a_kind(self):
         return max(Counter(self.card_value).values()) == 4
@@ -124,10 +138,91 @@ class Hand:
             return True
         return False
 
+    def __str__(self):
+        tmp_string = ''
+        for c in self.cards:
+            tmp_string = tmp_string + c.value + c.suit
 
-hand1 = Hand([Card('6', 'D'), Card('4', 'C'), Card('4', 'D'), Card('4', 'D'), Card('J', 'D')])
-hand1.print_hand()
-hand2 = Hand([Card('9', 'D'), Card('5', 'C'), Card('5', 'D'), Card('5', 'D'), Card('0', 'D')])
-hand2.print_hand()
-print hand2 > hand1
+        return tmp_string
 
+
+def get_card_from_string(give_card_string):
+    return Card(give_card_string[0], give_card_string[1])
+
+
+def build_deck():
+    tmp_full_deck = []
+    for v in values:
+        for s in suits:
+            tmp_full_deck.append(Card(v, s))
+
+    return tmp_full_deck
+
+
+def all_subsets(ss):
+    return itertools.chain(*map(lambda a: itertools.combinations(ss, a), range(0, len(ss)+1)))
+
+
+filename = 'input1.txt'
+with open(filename) as f:
+    content = f.readlines()
+
+content = [x.strip() for x in content]
+player_num = len(content) - 1
+
+flop_string = content[0]
+flop_cards = [get_card_from_string(x) for x in [flop_string[i:i+2] for i in range(0, len(flop_string), 2)]]
+
+player_cards = []
+for i in range(1, len(content)):
+    card_string = content[i]
+    tmp_cards = [get_card_from_string(x) for x in [card_string[i:i+2] for i in range(0, len(card_string), 2)]]
+    player_cards.append(tmp_cards)
+
+# Build the full deck
+deck = build_deck()
+# Remove the ones given to players and the flop
+for p in player_cards:
+    for c in p:
+        if c in deck:
+            deck.remove(c)
+        else:
+            print 'Error in given cards'
+            exit(1)
+
+for c in flop_cards:
+    if c in deck:
+        deck.remove(c)
+    else:
+        print 'Error in given cards'
+        exit(1)
+
+player_scores = np.zeros(player_num)
+for turn_card in deck:
+    new_deck = [x for x in deck if x != turn_card]
+    for river_card in new_deck:
+        show_down_hands = []
+        for p in player_cards:
+            seven_cards = []
+            for c in p:
+                seven_cards.append(c)
+
+            for c in flop_cards:
+                seven_cards.append(c)
+
+            seven_cards.append(turn_card)
+            seven_cards.append(river_card)
+
+            player_hands_combinations = itertools.combinations(seven_cards, 5)
+            player_hands = []
+            for hand_tuple in player_hands_combinations:
+                player_hands.append(Hand(list(hand_tuple)))
+
+            show_down_hands.append(max(player_hands))
+
+        winning_player_index = np.argmax(show_down_hands)
+        player_scores[winning_player_index] += 1
+
+print player_scores
+player_scores /= len(deck) * (len(deck) - 1)
+print player_scores
