@@ -32,6 +32,8 @@ while not_found:
             url = 'http://en.wikipedia.org' + link
             title = firstLink['title']
             if title in visited:
+                not_found = False
+                print 'Loop found at', title
                 break
 
             if title == "Philosophy":
