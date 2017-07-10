@@ -7,13 +7,14 @@ def is_palindrome(string):
             return False
     return True
 
-n = input('n:\n')
+# n = input('n:\n')
+n = 5
 max_factor_i = 0
 max_factor_j = 0
 max_product = 0
 
 found = False
-
+print 'n =', n
 start = time.time()
 
 for i in reversed(range(1, 10**n)):
@@ -24,7 +25,7 @@ for i in reversed(range(1, 10**n)):
         if len(str(j)) < n:
             break
         product = i * j
-        if i < max_factor_i and j < max_factor_j:
+        if i < max_factor_i and product < max_product:
             found = True
             break
         if product < max_product:
