@@ -19,33 +19,89 @@ def parse_input(_file_name):
     return _n, _arr
 
 
-def seen_buildings(permutation, _n):
+def seen_buildings(permutation):
     max_height = -1
     count = 0
-    for i in permutation:
-        if i > max_height:
-            max_height = i
+    for _i in permutation:
+        if _i > max_height:
+            max_height = _i
             count += 1
-    if count == _n:
-        return 0
     return count
-
 
 def build_combinations(_n):
     _combinations_map = {}
-    numbers = range(0, _n)
-    for i in numbers:
-        _combinations_map[i] = []
-    permutations = itertools.permutations(numbers)
+    for _i in range(0, _n + 1):
+        _combinations_map[_i] = []
+    permutations = itertools.permutations(range(1, _n + 1))
     for p in permutations:
         _arr = list(p)
-        # print _arr, seen_buildings(_arr, _n)
-        _combinations_map[seen_buildings(_arr, _n)].append(_arr)
+        _combinations_map[seen_buildings(_arr)].append(_arr)
+    for k, v in _combinations_map.iteritems():
+        _combinations_map[0] += v
     return _combinations_map
 
-file_name = 'input1'
+def try_place(_index, _candidate, _n, _grid):
+    new_grid = np.array(_grid)
+    region = _index / _n
+    sub_index = _index % _n
+    if region == 0:
+        # Vertical down
+        for i in range(0, _n):
+            _c = _candidate[i]
+            if _c != _grid[i, sub_index] and _grid[i, sub_index] != 0:
+                return None
+            new_grid[i, sub_index] = _c
+    elif region == 1:
+        # Horizontal left
+        for j in range(0, _n):
+            _c = _candidate[_n - j - 1]
+            if _c != _grid[sub_index, j] and _grid[sub_index, j] != 0:
+                return None
+            new_grid[sub_index, j] = _c
+    elif region == 2:
+        # Vertical up
+        for i in range(0, _n):
+            _c = _candidate[i]
+            if _c != _grid[_n - 1 - i, _n - 1 - sub_index] and _grid[_n - 1 - i, _n - 1 - sub_index] != 0:
+                return None
+            new_grid[_n - 1 - i, _n - 1 - sub_index] = _c
+    elif region == 3:
+        # Horizontal right
+        for j in range(0, _n):
+            _c = _candidate[j]
+            if _c != _grid[_n - 1 - sub_index, j] and _grid[_n - 1 - sub_index, j] != 0:
+                return None
+            new_grid[_n - 1 - sub_index, j] = _c
+
+    return new_grid
+
+def solve(_index, _grid, _n, _options, _arr, _combinations):
+    for _candidate in _options:
+        new_grid = try_place(_index, _candidate, _n, _grid)
+        if _index == 5:
+            print
+        print new_grid, _index
+        if new_grid is None:
+            continue
+        if _index == _n * 4 - 1:
+            # Found solution
+            return new_grid
+        next_options = _combinations[_arr[_index + 1]]
+        _solved_grid = solve(_index + 1, new_grid, _n, next_options, _arr, _combinations)
+        if _solved_grid is not None:
+            return _solved_grid
+
+    return None
+
+
+file_name = 'input3'
 
 n, arr = parse_input(file_name)
-grid = np.zeros(shape=[n, n], dtype=int)
-combinations = build_combinations(3)
+grid_history = list(np.zeros(shape=[n, n], dtype=int))
+
+combinations = build_combinations(n)
+print combinations
+
+solved_grid = solve(0, np.zeros(shape=[n, n], dtype=int), n, combinations[arr[0]], arr, combinations)
+print solved_grid
 
