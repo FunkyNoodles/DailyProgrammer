@@ -1,6 +1,17 @@
 import numpy as np
 import itertools
+import time
 
+
+class Index:
+    index = 0
+    requirement = 0
+    def __init__(self, _index, _requirement):
+        self.index = _index
+        self.requirement = _requirement
+
+    def __lt__(self, other):
+        return self.requirement < other.requirement
 
 def parse_input(_file_name):
     n_flag = False
@@ -17,7 +28,6 @@ def parse_input(_file_name):
                 _arr.append(num)
 
     return _n, _arr
-
 
 def seen_buildings(permutation):
     max_height = -1
@@ -77,16 +87,15 @@ def try_place(_index, _candidate, _n, _grid):
 
 def solve(_index, _grid, _n, _options, _arr, _combinations):
     for _candidate in _options:
-        new_grid = try_place(_index, _candidate, _n, _grid)
-        if _index == 5:
-            print
-        print new_grid, _index
+        new_grid = try_place(_arr[_index].index, _candidate, _n, _grid)
+        # print new_grid, _index
         if new_grid is None:
             continue
         if _index == _n * 4 - 1:
             # Found solution
             return new_grid
-        next_options = _combinations[_arr[_index + 1]]
+        next_options = _combinations[_arr[_index + 1].requirement]
+        print new_grid
         _solved_grid = solve(_index + 1, new_grid, _n, next_options, _arr, _combinations)
         if _solved_grid is not None:
             return _solved_grid
@@ -94,14 +103,17 @@ def solve(_index, _grid, _n, _options, _arr, _combinations):
     return None
 
 
-file_name = 'input3'
+file_name = 'input4'
 
 n, arr = parse_input(file_name)
-grid_history = list(np.zeros(shape=[n, n], dtype=int))
+index_arr = [Index(idx, req) for idx, req in enumerate(arr)]
+index_arr = sorted(index_arr, reverse=True)
 
+start = time.time()
 combinations = build_combinations(n)
-print combinations
+# print combinations
 
-solved_grid = solve(0, np.zeros(shape=[n, n], dtype=int), n, combinations[arr[0]], arr, combinations)
+solved_grid = solve(0, np.zeros(shape=[n, n], dtype=int), n, combinations[index_arr[0].requirement], index_arr, combinations)
 print solved_grid
-
+end = time.time()
+print 'Took:', (end - start), 's'
