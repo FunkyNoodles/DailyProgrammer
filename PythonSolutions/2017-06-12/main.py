@@ -137,7 +137,7 @@ def build_deck():
 
 
 def all_subsets(ss):
-    return itertools.chain(*map(lambda a: itertools.combinations(ss, a), range(0, len(ss)+1)))
+    return itertools.chain(*[itertools.combinations(ss, a) for a in range(0, len(ss)+1)])
 
 
 filename = 'input1.txt'
@@ -164,14 +164,14 @@ for p in player_cards:
         if c in deck:
             deck.remove(c)
         else:
-            print 'Error in given cards'
+            print('Error in given cards')
             exit(1)
 
 for c in flop_cards:
     if c in deck:
         deck.remove(c)
     else:
-        print 'Error in given cards'
+        print('Error in given cards')
         exit(1)
 
 player_scores = np.zeros(player_num)
@@ -204,6 +204,6 @@ for turn_card in deck:
         # else:
         player_scores[winning_player_index] += 1
 
-print player_scores
+print(player_scores)
 player_scores /= len(deck) * (len(deck) - 1)
-print player_scores
+print(player_scores)

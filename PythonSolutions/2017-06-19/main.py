@@ -1,6 +1,6 @@
 import numpy as np
 
-n = int(raw_input('dimension:\n'))
+n = int(input('dimension:\n'))
 arr = np.zeros((n, n))
 
 counter = 1

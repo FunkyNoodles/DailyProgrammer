@@ -1,8 +1,8 @@
 import BeautifulSoup
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import re
 
-title = raw_input('Name of the Wikipedia page:\n')
+title = input('Name of the Wikipedia page:\n')
 
 # title = "London Stock Exchange"
 # Convert to proper link
@@ -11,13 +11,13 @@ title = title.replace(" ", "_")
 visited = [title]
 
 url = "http://en.wikipedia.org/wiki/" + title
-page = urllib.urlopen(url)
+page = urllib.request.urlopen(url)
 not_found = True
 
 while not_found:
     soup = BeautifulSoup.BeautifulSoup(page.read())
     title = soup.find(id="firstHeading").contents[0]
-    print title
+    print(title)
 
     body = soup.find(id="bodyContent")
     paragraphs = soup.findAll("p")
@@ -33,15 +33,15 @@ while not_found:
             title = firstLink['title']
             if title in visited:
                 not_found = False
-                print 'Loop found at', title
+                print('Loop found at', title)
                 break
 
             if title == "Philosophy":
-                print title
+                print(title)
                 not_found = False
                 break
 
-            page = urllib.urlopen(url)
+            page = urllib.request.urlopen(url)
             visited.append(title)
             break
 

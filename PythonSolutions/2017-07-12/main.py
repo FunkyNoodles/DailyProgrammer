@@ -15,7 +15,7 @@ class Address:
 
     def parse(self):
         lines = self.address_string.split('\n')
-        lines = filter(lambda a: a != '', lines)
+        lines = [a for a in lines if a != '']
 
         street_index = 0
         if self.has_numbers(lines[1]):
@@ -44,16 +44,16 @@ class Address:
 
     def print_address(self):
         if len(self.name):
-            print 'name=' + self.name
-        print 'business=' + self.business
-        print 'street=' + self.street
+            print('name=' + self.name)
+        print('business=' + self.business)
+        print('street=' + self.street)
         if len(self.city_state) > 0:
-            print 'city=' + self.city_state.split(', ')[0]
-            print 'state=' + self.city_state.split(', ')[1]
-        print 'postal_code=' + self.postcode
-        print 'country=' + self.country
+            print('city=' + self.city_state.split(', ')[0])
+            print('state=' + self.city_state.split(', ')[1])
+        print('postal_code=' + self.postcode)
+        print('country=' + self.country)
         if len(self.phone) > 0:
-            print 'phone=' + self.phone
+            print('phone=' + self.phone)
 
 
 temp_address = """

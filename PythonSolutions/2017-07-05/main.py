@@ -14,14 +14,14 @@ max_factor_j = 0
 max_product = 0
 
 found = False
-print 'n =', n
+print('n =', n)
 start = time.time()
 
-for i in reversed(range(1, 10**n)):
+for i in reversed(list(range(1, 10**n))):
     if len(str(i)) < n or found:
         break
 
-    for j in reversed(range(1, i+1)):
+    for j in reversed(list(range(1, i+1))):
         if len(str(j)) < n:
             break
         product = i * j
@@ -37,5 +37,5 @@ for i in reversed(range(1, 10**n)):
                 max_product = product
 
 end = time.time()
-print max_product, 'factors:', max_factor_i, 'and', max_factor_j
-print 'Took', end - start, 's'
+print(max_product, 'factors:', max_factor_i, 'and', max_factor_j)
+print('Took', end - start, 's')

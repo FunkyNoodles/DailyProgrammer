@@ -21,7 +21,8 @@ def parse_input(_file_name):
     _arr = []
     _n = 0
     _init_grid = None
-    with open(_file_name, 'r') as f:
+    with open(_file_name, 'r') as\
+            f:
         for _index, line in enumerate(f):
             for _j, s in enumerate(line.split(' ')):
                 num = int(s)
@@ -50,11 +51,11 @@ def build_combinations(_n):
     _combinations_map = {}
     for _i in range(0, _n + 1):
         _combinations_map[_i] = []
-    permutations = itertools.permutations(range(1, _n + 1))
+    permutations = itertools.permutations(list(range(1, _n + 1)))
     for p in permutations:
         _arr = list(p)
         _combinations_map[seen_buildings(_arr)].append(_arr)
-    for k, v in _combinations_map.iteritems():
+    for k, v in _combinations_map.items():
         _combinations_map[0] += v
     return _combinations_map
 
@@ -124,7 +125,7 @@ def solve(_index, _grid, _n, _options, _arr, _combinations, _nodes_expanded):
             # Found solution
             return new_grid, _nodes_expanded
         next_options = _combinations[_arr[_index + 1].requirement]
-        print new_grid, _index
+        print(new_grid, _index)
         _solved_grid, _nodes_expanded = solve(_index + 1, new_grid, _n, next_options, _arr, _combinations, _nodes_expanded)
         if _solved_grid is not None:
             return _solved_grid, _nodes_expanded
@@ -148,6 +149,6 @@ index_arr = sorted(index_arr)
 #     print k, len(v)
 
 solved_grid, nodes_expanded = solve(0, init_grid, n, combinations[index_arr[0].requirement], index_arr, combinations, 0)
-print solved_grid
+print(solved_grid)
 end = time.time()
-print 'Took:', (end - start), 's', '\tNodes Expanded:', nodes_expanded
+print('Took:', (end - start), 's', '\tNodes Expanded:', nodes_expanded)
